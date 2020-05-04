@@ -7,8 +7,12 @@ import databaseConfig from '../config/database';
 class Database {
   constructor() {
     this.connection = new Sequelize(databaseConfig);
-
     models.map((model) => model.init(this.connection));
+    models.map(
+      (model) =>
+        typeof model.associate === 'function' &&
+        model.associate(this.connection.models)
+    );
   }
 }
 
